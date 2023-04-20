@@ -1,6 +1,9 @@
 package com.restfuldatajpa.personal.crudapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "User_details")
@@ -13,10 +16,13 @@ public class User {
 	private String name;
 
 	@Column(name = "Phone_Number")
+	@JsonIgnore
 	private long phoneNumber;
 
+	@JsonIgnore
 	private String password;
 
+	@JsonIgnore
 	private String email;
 
 	public int getId() {
