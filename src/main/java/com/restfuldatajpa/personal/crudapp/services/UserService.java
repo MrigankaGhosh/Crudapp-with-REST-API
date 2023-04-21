@@ -15,10 +15,6 @@ public class UserService {
 	@Autowired
 	private UserRepository repo;
 
-	/*
-	 * public UserService(UserRepository repo) { this.repo = repo; }
-	 */
-
 	// 1. Add new user
 
 	public User create(User user) {
