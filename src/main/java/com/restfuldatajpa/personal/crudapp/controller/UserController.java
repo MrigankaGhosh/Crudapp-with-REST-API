@@ -1,24 +1,24 @@
 package com.restfuldatajpa.personal.crudapp.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.restfuldatajpa.personal.crudapp.entity.User;
-import com.restfuldatajpa.personal.crudapp.exception.InvalidUserInputException;
+import com.restfuldatajpa.personal.crudapp.entity.UserJsonResponse;
 import com.restfuldatajpa.personal.crudapp.exception.NoDataFoundException;
-import com.restfuldatajpa.personal.crudapp.exception.UserNotFoundException;
 import com.restfuldatajpa.personal.crudapp.services.UserService;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
 
 	public static final Logger log = Logger.getLogger(UserController.class);
@@ -36,9 +36,9 @@ public class UserController {
 
 	// 1. Show all Users
 
-	@GetMapping("/users")
-	public List<User> displayAllData() {
-		List<User> users = service.showAll();
+	@GetMapping("")
+	public List<UserJsonResponse> displayAllData() {
+		List<UserJsonResponse> users = service.showAll();
 		if (users.isEmpty()) {
 			throw new NoDataFoundException("No data found in the database!!");
 		} else {
@@ -49,7 +49,7 @@ public class UserController {
 
 	// 2. Count the number of users present
 
-	@GetMapping("/users/count")
+	@GetMapping("/count")
 	public long totalNumberOfData() {
 		long count = service.count();
 		return count;
@@ -57,49 +57,58 @@ public class UserController {
 
 	// 3. Add a new User
 
-	@PostMapping("/users")
-	public void addData(@RequestBody User user) {
-		if (user.getName().length() < 2) {
-			throw new InvalidUserInputException("Name should have more than 2 characters!!");
-		} else {
-			service.create(user);
-		}
-
+	@PostMapping("")
+	public Object addData(@RequestBody User user) {
+		log.info("...................Inside  addData of UserController.class");
+		return service.create(user);
 	}
 
 	// 4. Display a User by id
 
-	@GetMapping("/users/{id}")
-	public Optional<User> displayById(@PathVariable int id) {
-		Optional<User> user = service.showOne(id);
+	@GetMapping("/id")
+	public UserJsonResponse displayById(@RequestParam int id) {
+		UserJsonResponse userJsonResponse = service.showOne(id);
 
-		if (user.isEmpty()) {
-			log.info(".............inside if block { GET /users/{id} }");
-
-			throw new UserNotFoundException("User with id: " + id + " not found!!");
-		} else {
-			log.info("................inside else block { GET /users/{id} }");
-
-			return user;
-		}
+		return userJsonResponse;
 
 	}
 
 	// 5. Delete a User by id
 
-	@DeleteMapping("/users/{id}")
-	public void deleteById(@PathVariable int id) {
-		Optional<User> user = service.showOne(id);
+	@DeleteMapping("/id")
+	public String deleteById(@RequestParam int id) {
+		service.delete(id);
+		
+		return "Account for: " + id + " Deleted!";
+	}
 
-		if (user.isEmpty()) {
-			log.info(".............inside if block { DELETE /users/{id} }");
+	// 6. Display a User by Name
 
-			throw new UserNotFoundException("User with id: " + id + " not found!!");
-		} else {
-			log.info("................inside else block { DELETE /users/{id} }");
+	@GetMapping("/name")
+	public UserJsonResponse displayByName(@RequestParam String name) {
+		UserJsonResponse userJsonResponse = service.showOneByName(name);
 
-			service.delete(id);
-		}
+		return userJsonResponse;
+
+	}
+
+	// 7. Display a User by Phone Number
+
+	@GetMapping("/phone-number")
+	public UserJsonResponse displayByPhoneNumber(@RequestParam String phoneNumber) {
+		UserJsonResponse userJsonResponse = service.showOneByPhoneNumber(phoneNumber);
+
+		return userJsonResponse;
+
+	}
+
+	// 8. Display a User by Email
+
+	@GetMapping("/email")
+	public UserJsonResponse displayByEmail(@RequestParam String email) {
+		UserJsonResponse userJsonResponse = service.showOneByEmail(email);
+
+		return userJsonResponse;
 
 	}
 

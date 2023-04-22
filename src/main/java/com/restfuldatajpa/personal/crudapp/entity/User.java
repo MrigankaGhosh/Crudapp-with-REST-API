@@ -1,13 +1,14 @@
 package com.restfuldatajpa.personal.crudapp.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "User_details")
@@ -17,16 +18,18 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
+	@Size(min = 2, max = 20, message = "Name should have 2 to 20 characters!!")
 	private String name;
 
 	@Column(name = "Phone_Number")
-	@JsonIgnore
-	private long phoneNumber;
+	@Size(min = 10, max = 10, message = "Phone Number should have exactly 10 characters!!")
+	private String phoneNumber;
 
-	@JsonIgnore
+	@Size(min = 2, max = 20, message = "Password should have 2 to 20 characters!!")
 	private String password;
 
-	@JsonIgnore
+	@Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
+            flags = Pattern.Flag.CASE_INSENSITIVE)
 	private String email;
 
 	public int getId() {
@@ -41,11 +44,11 @@ public class User {
 		this.name = name;
 	}
 
-	public long getPhoneNumber() {
+	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(long phoneNumber) {
+	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
@@ -68,7 +71,7 @@ public class User {
 	public User() {
 	}
 
-	public User(String name, long phoneNumber, String password, String email) {
+	public User(String name, String phoneNumber, String password, String email) {
 		super();
 		this.name = name;
 		this.phoneNumber = phoneNumber;
