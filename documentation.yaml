@@ -1,0 +1,174 @@
+openapi: 3.0.1
+info:
+  title: Crudapp
+  description: built a rest api
+  version: "1.0"
+servers:
+- url: http://localhost:8090
+  description: Generated server url
+paths:
+  /users:
+    get:
+      tags:
+      - user-controller
+      operationId: displayAllData
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserJsonResponse'
+    post:
+      tags:
+      - user-controller
+      operationId: addData
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /users/phone-number:
+    get:
+      tags:
+      - user-controller
+      operationId: displayByPhoneNumber
+      parameters:
+      - name: phoneNumber
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserJsonResponse'
+  /users/name:
+    get:
+      tags:
+      - user-controller
+      operationId: displayByName
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserJsonResponse'
+  /users/id:
+    get:
+      tags:
+      - user-controller
+      operationId: displayById
+      parameters:
+      - name: id
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserJsonResponse'
+    delete:
+      tags:
+      - user-controller
+      operationId: deleteById
+      parameters:
+      - name: id
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /users/email:
+    get:
+      tags:
+      - user-controller
+      operationId: displayByEmail
+      parameters:
+      - name: email
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserJsonResponse'
+  /users/count:
+    get:
+      tags:
+      - user-controller
+      operationId: totalNumberOfData
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int64
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          maxLength: 20
+          minLength: 2
+          type: string
+        phoneNumber:
+          maxLength: 10
+          minLength: 10
+          type: string
+        password:
+          maxLength: 20
+          minLength: 2
+          type: string
+        email:
+          type: string
+    UserJsonResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
