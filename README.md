@@ -10,6 +10,8 @@ Crudapp is a basic Rest API that can perform a bunch of crud operations as follo
 7. Show Users by their phone number
 8. Show Users by their email
 
+The documentation for this REST API is in the file named documentation.yaml 
+
 The language, frameworks and development tools used are:
 1. Java
 2. Spring & Spring Boot (application framework)
@@ -25,3 +27,10 @@ there is an in-build server provided by the spring boot starter pack. By default
 However, if this port is busy in your machine, you can change the port number by going to src/main/resources/application.properties 
 and change server.port=8090 to any available port. Happy Crudding!!!
 
+I have pasted some of the screenshots showing the various uri patterns in accordance to the openapi specifications:
+
+1. Entity Classes
+![2023-04-23 (1)](https://user-images.githubusercontent.com/56976635/233859338-1ec64580-1f3d-41bd-b9e5-636ff1319f67.png)
+
+2. CRUD operation URI patterns:
+![2023-04-23 (2)](https://user-images.githubusercontent.com/56976635/233859393-f3fae51c-f14d-485a-857f-95294faf7999.png)
